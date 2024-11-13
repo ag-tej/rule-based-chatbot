@@ -1,0 +1,45 @@
+/* CHATBOT IS CLOSE */
+.chatbox {
+  display: flex;
+  flex-direction: column;
+  background: #f9f9f9;
+  width: 350px;
+  height: 450px;
+  z-index: -999;
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+}
+
+/* CHATBOT IS OPEN */
+.chatbox-active {
+  transform: translateY(-40px);
+  z-index: 999;
+  opacity: 1;
+}
+
+.message_item {
+  max-width: 65%;
+  width: fit-content;
+  margin-top: 20px;
+  padding: 8px 12px;
+}
+
+.message_item-visitor {
+  margin-left: auto;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  background: #1e40af;
+  color: white;
+}
+
+.message_item-operator {
+  margin-right: auto;
+  border-top-right-radius: 12px;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  background: #27272a;
+  color: white;
+}
