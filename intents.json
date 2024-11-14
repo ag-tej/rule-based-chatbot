@@ -1,83 +1,299 @@
 {
   "intents": [
     {
-      "tag": "greeting",
+      "tag": "activities",
       "patterns": [
-        "Hi",
-        "Hey",
-        "How are you",
-        "Is anyone there?",
-        "Hello",
-        "Good day"
+        "What extracurricular activities are available at your college?",
+        "How can I get involved in extracurricular activities?"
       ],
       "responses": [
-        "Hey :-)",
-        "Hello, thanks for visiting",
-        "Hi there, what can I do for you?",
-        "Hi there, how can I help?"
+        "At DWIT College, a variety of extracurricular activities are available, including power workshops, hiking, job fairs, academic clubs, and cultural activities.",
+        "Visit our website to browse and join clubs, sign up for events, and stay updated on upcoming activities."
       ]
     },
     {
-      "tag": "goodbye",
-      "patterns": ["Bye", "See you later", "Goodbye"],
+      "tag": "admission",
+      "patterns": [
+        "How can I get confirmation of registration for admission?",
+        "What is the eligibility criteria required for admission?",
+        "What are the admission requirements?",
+        "How do I apply for admission?",
+        "What is the admission process for your college?",
+        "Can you guide me through the admission process?"
+      ],
       "responses": [
-        "See you later, thanks for visiting",
-        "Have a nice day",
-        "Bye! Come back again soon."
+        "After completing the registration form, a thank you message confirms your registration. Additionally, you will receive an SMS and email confirmation, and a college representative will contact you for verification and information about the entrance and admission process.",
+        "To apply for admission, visit our official website and create an account on the admissions portal. Complete the online application, upload the required documents, and pay the application fee. For more details, visit our Admissions page."
       ]
     },
     {
-      "tag": "thanks",
-      "patterns": ["Thanks", "Thank you", "That's helpful", "Thank's a lot!"],
-      "responses": ["Happy to help!", "Any time!", "My pleasure"]
-    },
-    {
-      "tag": "items",
+      "tag": "affiliation",
       "patterns": [
-        "Which items do you have?",
-        "What kinds of items are there?",
-        "What do you sell?"
+        "Is your college affiliated with any organizations or universities?",
+        "What affiliations does your college have?",
+        "Which institutions is your college associated with?",
+        "Is Deerwalk College TU affiliated?"
       ],
       "responses": [
-        "We sell coffee and tea",
-        "We have coffee and tea"
+        "DWIT offers two academic programs - BSc.CSIT and BCA, both affiliated with Tribhuvan University (TU).",
+        "Deerwalk College is affiliated with Tribhuvan University (TU)."
       ]
     },
     {
-      "tag": "payments",
-      "patterns": [
-        "Do you take credit cards?",
-        "Do you accept Mastercard?",
-        "Can I pay with Paypal?",
-        "Are you cash only?"
-      ],
+      "tag": "application_process",
+      "patterns": ["How can I apply?", "What is the application process?"],
       "responses": [
-        "We accept VISA, Mastercard and Paypal",
-        "We accept most major credit cards, and Paypal"
+        "You can apply online through our website. Follow the instructions provided in the admissions section."
       ]
     },
     {
-      "tag": "delivery",
+      "tag": "bca",
       "patterns": [
-        "How long does delivery take?",
-        "How long does shipping take?",
-        "When do I get my delivery?"
+        "Why choose BCA?",
+        "Which subject is most important in BCA?",
+        "What are the eligibility criteria for the BCA program?",
+        "What career opportunities are available for BCA graduates?",
+        "Are there internship opportunities available during the BCA program?"
       ],
       "responses": [
-        "Delivery takes 2-4 days",
-        "Shipping takes 2-4 days"
+        "The BCA program provides essential skills in networking, programming, and information systems, preparing students for careers like Computer System Analyst, Software Programmer, and Information System Manager.",
+        "The BCA syllabus includes subjects like computer graphics, animation, computer networks, operating systems, database management, and Java programming.",
+        "Eligibility for BCA requires either a minimum D+ grade in each subject of grade 11 and 12 with a CGPA of 2.0 or higher, or second division marks in 10+2 or an equivalent qualification. Passing the BCA entrance test is also required.",
+        "Career prospects include Computer System Analyst, Software Programmer, Information System Manager, and Database Administrator.",
+        "Yes, we offer support for internships to help students gain practical experience and enhance career prospects."
       ]
     },
     {
-      "tag": "funny",
+      "tag": "bca_duration",
       "patterns": [
-        "Tell me a joke!",
-        "Tell me something funny!",
-        "Do you know a joke?"
+        "What is the duration of the BCA program?",
+        "How long is the BCA program?",
+        "Is BCA a 4-year program?"
       ],
       "responses": [
-        "Why did the hipster burn his mouth? He drank the coffee before it was cool.",
-        "What did the buffalo say when his son left for college? Bison."
+        "The BCA program is a four-year program, spanning eight semesters."
+      ]
+    },
+    {
+      "tag": "bca_subjects_1st_semester",
+      "patterns": [
+        "What subjects are there in the BCA 1st semester?",
+        "List subjects for the first semester of BCA.",
+        "Subjects in BCA first semester"
+      ],
+      "responses": [
+        "In the first semester of BCA, students study Computer Fundamentals, Digital Logic, English, Sociology, and Technology and Mathematics."
+      ]
+    },
+    {
+      "tag": "bca_subjects_2nd_semester",
+      "patterns": [
+        "What subjects are there in the BCA 2nd semester?",
+        "List subjects for the second semester of BCA.",
+        "Subjects in BCA second semester"
+      ],
+      "responses": [
+        "In the second semester of BCA, students study C Programming, English, Microprocessor, Mathematics, and Financial Accounting."
+      ]
+    },
+    {
+      "tag": "bca_subjects_3rd_semester",
+      "patterns": [
+        "What subjects are there in the BCA 3rd semester?",
+        "List subjects for the third semester of BCA.",
+        "Subjects in BCA third semester"
+      ],
+      "responses": [
+        "In the third semester of BCA, students study Web Technology, System Analysis and Design, Probability and Statistics, Object-Oriented Programming (OOP) in Java, and Data Structure and Algorithm."
+      ]
+    },
+    {
+      "tag": "bca_subjects_4th_semester",
+      "patterns": [
+        "What subjects are there in the BCA 4th semester?",
+        "List subjects for the fourth semester of BCA.",
+        "Subjects in BCA fourth semester"
+      ],
+      "responses": [
+        "In the fourth semester of BCA, students study Database Management Systems (DBMS), Numerical Methods, Operating Systems, Scripting Languages, Software Engineering, and Project I."
+      ]
+    },
+    {
+      "tag": "bca_subjects_5th_semester",
+      "patterns": [
+        "What subjects are there in the BCA 5th semester?",
+        "List subjects for the fifth semester of BCA.",
+        "Subjects in BCA fifth semester"
+      ],
+      "responses": [
+        "In the fifth semester of BCA, students study MIS and e-business, DotNet Technology, Computer Networking, Introduction to Management, and Computer Graphics and Animation."
+      ]
+    },
+    {
+      "tag": "bca_subjects_6th_semester",
+      "patterns": [
+        "What subjects are there in the BCA 6th semester?",
+        "List subjects for the sixth semester of BCA.",
+        "Subjects in BCA sixth semester"
+      ],
+      "responses": [
+        "In the sixth semester of BCA, students study Advanced Java, Distributed Systems, Network Programming, Mobile Programming, and Applied Economics with Project II."
+      ]
+    },
+    {
+      "tag": "bca_subjects_7th_semester",
+      "patterns": [
+        "What subjects are there in the BCA 7th semester?",
+        "List subjects for the seventh semester of BCA.",
+        "Subjects in BCA seventh semester"
+      ],
+      "responses": [
+        "In the seventh semester of BCA, students study Cloud Computing, E-Governance, and Artificial Intelligence (AI)."
+      ]
+    },
+    {
+      "tag": "bca_subjects_8th_semester",
+      "patterns": [
+        "What subjects are there in the BCA 8th semester?",
+        "List subjects for the eighth semester of BCA.",
+        "Subjects in BCA eighth semester"
+      ],
+      "responses": [
+        "In the eighth semester of BCA, students study Multimedia Systems, Database Programming, and Operations Research, along with the final project."
+      ]
+    },
+    {
+      "tag": "career_services",
+      "patterns": [
+        "How can I find internships?",
+        "Are there job fairs on campus?",
+        "What career workshops do you offer?",
+        "Can alumni use career services?"
+      ],
+      "responses": [
+        "We provide resources to help you search for internships, including databases, networking, and advising.",
+        "We host job fairs where you can connect with employers and explore career paths.",
+        "Our workshops cover topics like interviewing skills, job search strategies, and LinkedIn profile optimization.",
+        "Yes, alumni can access career services, offering support at any career stage."
+      ]
+    },
+    {
+      "tag": "contact",
+      "patterns": [
+        "What is the phone number for student services?",
+        "How can I contact the admissions office?"
+      ],
+      "responses": [
+        "You can contact the admissions office at our college using the following number: 01-4585424. For more contacts, visit our Contact Us page."
+      ]
+    },
+    {
+      "tag": "courses_programs_majors",
+      "patterns": [
+        "What courses do you offer?",
+        "Tell me about the available programs.",
+        "What are the majors at your college?"
+      ],
+      "responses": [
+        "Our college offers two bachelor programs: BCA and BSc.CSIT. Visit our Academics page for more details."
+      ]
+    },
+    {
+      "tag": "facilities",
+      "patterns": [
+        "Can I bring a car or bike to campus?",
+        "Is parking available on campus?",
+        "What resources are available for students?",
+        "What facilities does your college offer?"
+      ],
+      "responses": [
+        "Yes, vehicles are allowed on campus.",
+        "On-campus parking is available for students and faculty.",
+        "DWIT offers classrooms, a library, labs, sports facilities, a cafeteria, and parking."
+      ]
+    },
+    {
+      "tag": "fees",
+      "patterns": [
+        "What is the tuition fee for BCA?",
+        "How much does it cost for BCA?",
+        "What are the tuition fees for BSc.CSIT?",
+        "How much does it cost for CSIT?"
+      ],
+      "responses": [
+        "For tuition fees, please check the official college website or contact the admissions office."
+      ]
+    },
+    {
+      "tag": "greetings",
+      "patterns": ["Hi", "Hello", "Hey", "Namaste"],
+      "responses": [
+        "Namaste! How can I assist you today?",
+        "Namaste!",
+        "Namaste! What can I help you with?"
+      ]
+    },
+    {
+      "tag": "campus life",
+      "patterns": [
+        "What is campus life like?",
+        "Can you describe student life on campus?",
+        "Are there any events organized on campus?"
+      ],
+      "responses": [
+        "Our campus life is vibrant and engaging, with many events, clubs, and activities for students to participate in.",
+        "Student life here is full of learning opportunities and fun, with a focus on holistic growth through various events."
+      ]
+    },
+    {
+      "tag": "rules",
+      "patterns": [
+        "What are the rules regarding attendance at the college?",
+        "Is there a dress code policy at the DWIT college?"
+      ],
+      "responses": [
+        "Attendance is mandatory at the college, with a minimum requirement of 85% attendance in all classes to be eligible to sit for exams.",
+        "No, the college has a formal dress code policy to maintain a professional and respectful environment."
+      ]
+    },
+    {
+      "tag": "scholarships",
+      "patterns": [
+        "Do you offer scholarships?",
+        "What scholarships are available at your college?",
+        "How can I apply for scholarships?",
+        "What are the eligibility criteria for scholarships?"
+      ],
+      "responses": [
+        "We are committed to supporting our students financially through a variety of scholarships on merit basis. For detailed information on each scholarship, including specific eligibility requirements and deadlines, please visit our website."
+      ]
+    },
+    {
+      "tag": "security",
+      "patterns": [
+        "How safe is the campus?",
+        "Are there security guards present at the college?",
+        "How is the college campus monitored for security?"
+      ],
+      "responses": [
+        "The college has 24 hours security/surveillance taken care of through CCTV and the guards stationed at the Front and Rear Gates. Fire extinguishers and smoke detectors have been placed in different places and are routinely checked.",
+        "Yes, the college has security guards stationed at the Front and Rear Gates, ensuring 24-hour security and surveillance.",
+        "The college campus is monitored through 24-hour CCTV surveillance, along with security guards stationed at key entry points to ensure safety."
+      ]
+    },
+    {
+      "tag": "technology",
+      "patterns": [
+        "Is there Wi-Fi on campus?",
+        "What computer labs are available?",
+        "Can I print on campus?",
+        "Is there technical support for students?"
+      ],
+      "responses": [
+        "Yes, we offer campus-wide Wi-Fi coverage, ensuring students have reliable internet access in classrooms, residence halls, and common areas.",
+        "We have multiple computer labs equipped with the latest software and hardware, available for student use.",
+        "Printing services are available on campus. Students can print documents from computer labs or personal devices using our wireless printing service.",
+        "Our IT Help Desk provides technical support for students, offering assistance with software installation, network connectivity issues, account access, and general troubleshooting. Contact the Help Desk via phone, email, or visit their office for personalized assistance."
       ]
     }
   ]
