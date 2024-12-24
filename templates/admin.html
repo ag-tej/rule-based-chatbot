@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='images/dwit_logo.png') }}"
+      type="image/x-icon"
+    />
+    <title>Chatbot Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+      <h1 class="text-3xl font-bold mb-8">Chatbot Admin Dashboard</h1>
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Unknown Queries Section -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h2 class="text-xl font-semibold mb-4">Unknown Queries</h2>
+          <div id="queries-list" class="space-y-4">
+            <!-- Queries will be loaded here -->
+          </div>
+        </div>
+        <!-- Intents Management Section -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <h2 class="text-xl font-semibold mb-4">Manage Intents</h2>
+          <div id="intents-list" class="space-y-4 mb-6">
+            <!-- Intents will be loaded here -->
+          </div>
+          <h3 class="text-lg font-semibold mb-4">Add New Intent</h3>
+          <form id="intent-form" class="space-y-4">
+            <input type="hidden" id="edit-intent-id" value="" />
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Tag</label>
+              <input
+                type="text"
+                id="tag"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
+                required
+              />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Patterns (one per line)</label
+              >
+              <textarea
+                id="patterns"
+                rows="4"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
+                required
+              ></textarea>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Responses (one per line)</label
+              >
+              <textarea
+                id="responses"
+                rows="4"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border"
+                required
+              ></textarea>
+            </div>
+            <button
+              type="submit"
+              id="submit-intent"
+              class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Add Intent
+            </button>
+            <button
+              type="button"
+              id="cancel-edit"
+              class="hidden ml-2 bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
+            >
+              Cancel Edit
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let selectedQueryId = null;
+      const submitButton = document.getElementById("submit-intent");
+      const cancelEditButton = document.getElementById("cancel-edit");
+      const intentForm = document.getElementById("intent-form");
+      const editIntentIdInput = document.getElementById("edit-intent-id");
+
+      // Load queries and intents
+      async function loadData() {
+        await Promise.all([loadQueries(), loadIntents()]);
+      }
+
+      // Load queries
+      async function loadQueries() {
+        try {
+          const response = await fetch("/api/unknown-queries");
+          const queries = await response.json();
+          const queriesList = document.getElementById("queries-list");
+          queriesList.innerHTML = queries
+            .filter((query) => query.status === "pending")
+            .map(
+              (query) => `
+              <div class="p-4 border rounded-md cursor-pointer hover:bg-gray-50" onclick="selectQuery('${
+                query._id
+              }', '${query.query}')">
+              <p class="font-medium">${query.query}</p>
+              <p class="text-sm text-gray-500">${new Date(
+                query.timestamp
+              ).toLocaleString()}</p>
+              <button onclick="deleteQuery('${
+                query._id
+              }')" class="text-red-500 hover:text-red-700">Delete</button>
+              </div>
+              <span class="inline-block px-2 py-1 text-xs rounded-full mt-2 bg-yellow-100 text-yellow-800">
+                pending
+              </span>`
+            )
+            .join("");
+        } catch (error) {
+          console.error("Error loading queries:", error);
+        }
+      }
+
+      // Delete query
+      async function deleteQuery(queryId) {
+        if (!confirm("Are you sure you want to delete this query?")) return;
+        try {
+          const response = await fetch("/api/unknown-queries", {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id: queryId }),
+          });
+          if (!response.ok) throw new Error("Failed to delete query");
+          const result = await response.json();
+          alert(result.message);
+          loadQueries();
+        } catch (error) {
+          console.error("Error deleting query:", error);
+          alert("Failed to delete query");
+        }
+      }
+
+      // Load intents
+      async function loadIntents() {
+        try {
+          const response = await fetch("/api/intents");
+          const intents = await response.json();
+          const intentsList = document.getElementById("intents-list");
+          intentsList.innerHTML = intents
+            .map(
+              (intent) => `
+              <div class="p-4 border rounded-md">
+                <div class="flex justify-between items-start mb-2">
+                  <h4 class="font-semibold">${intent.tag}</h4>
+                  <div class="space-x-2">
+                    <button onclick="editIntent('${
+                      intent._id
+                    }', ${JSON.stringify(intent).replace(
+                /"/g,
+                "&quot;"
+              )})" class="text-blue-500 hover:text-blue-700">Edit</button>
+                    <button onclick="deleteIntent('${intent._id}', '${
+                intent.tag
+              }')" class="text-red-500 hover:text-red-700">Delete</button>
+                  </div>
+                </div>
+                <div class="text-sm">
+                  <p class="font-medium mb-1">Patterns:</p>
+                  <ul class="list-disc list-inside mb-2">
+                    ${intent.patterns.map((p) => `<li>${p}</li>`).join("")}
+                  </ul>
+                  <p class="font-medium mb-1">Responses:</p>
+                  <ul class="list-disc list-inside">
+                    ${intent.responses.map((r) => `<li>${r}</li>`).join("")}
+                  </ul>
+                </div>
+              </div>`
+            )
+            .join("");
+        } catch (error) {
+          console.error("Error loading intents:", error);
+        }
+      }
+
+      // Select query
+      function selectQuery(queryId, queryText) {
+        selectedQueryId = queryId;
+        document.getElementById("patterns").value = queryText;
+      }
+
+      // Edit intent
+      function editIntent(intentId, intent) {
+        editIntentIdInput.value = intentId;
+        document.getElementById("tag").value = intent.tag;
+        document.getElementById("patterns").value = intent.patterns.join("\n");
+        document.getElementById("responses").value =
+          intent.responses.join("\n");
+        submitButton.textContent = "Update Intent";
+        cancelEditButton.classList.remove("hidden");
+        document.querySelector("h3").textContent = "Edit Intent";
+      }
+
+      // Cancel edit
+      cancelEditButton.addEventListener("click", () => {
+        intentForm.reset();
+        editIntentIdInput.value = "";
+        submitButton.textContent = "Add Intent";
+        cancelEditButton.classList.add("hidden");
+        document.querySelector("h3").textContent = "Add New Intent";
+        selectedQueryId = null;
+      });
+
+      // Delete intent
+      async function deleteIntent(intentId, tag) {
+        if (!confirm("Are you sure you want to delete this intent?")) return;
+        try {
+          const deletingMessage = document.createElement("p");
+          deletingMessage.textContent = "Deleting and retraining the model...";
+          document.body.appendChild(deletingMessage);
+          const response = await fetch("/api/intents", {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id: intentId, tag: tag }),
+          });
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || "Failed to delete intent");
+          }
+          const result = await response.json();
+          alert(result.message);
+          deletingMessage.remove();
+          loadIntents();
+        } catch (error) {
+          console.error("Error deleting intent:", error);
+          alert(error.message || "Failed to delete intent");
+        }
+      }
+
+      // Handle form submission
+      intentForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        submitButton.disabled = true;
+        const isEditing = editIntentIdInput.value !== "";
+        submitButton.textContent = isEditing ? "Updating..." : "Adding...";
+        const tag = document.getElementById("tag").value;
+        const patterns = document
+          .getElementById("patterns")
+          .value.split("\n")
+          .filter((p) => p.trim());
+        const responses = document
+          .getElementById("responses")
+          .value.split("\n")
+          .filter((r) => r.trim());
+        const intent = { tag, patterns, responses };
+        const method = isEditing ? "PUT" : "POST";
+        const body = isEditing
+          ? JSON.stringify({ id: editIntentIdInput.value, intent })
+          : JSON.stringify({ intent, queryId: selectedQueryId });
+        try {
+          const response = await fetch("/api/intents", {
+            method,
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body,
+          });
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || "Failed to save intent");
+          }
+          const result = await response.json();
+          alert(result.message);
+          intentForm.reset();
+          editIntentIdInput.value = "";
+          submitButton.textContent = "Add Intent";
+          cancelEditButton.classList.add("hidden");
+          selectedQueryId = null;
+          await loadData();
+        } catch (error) {
+          console.error("Error saving intent:", error);
+          alert(error.message || "Failed to save intent");
+        } finally {
+          submitButton.disabled = false;
+        }
+      });
+
+      // Load data on page load
+      loadData();
+    </script>
+  </body>
+</html>

@@ -30,8 +30,24 @@ class Chatbox {
     }
   }
 
+  async recordUnknownQuery(query) {
+    try {
+      const response = await fetch($SCRIPT_ROOT + "/api/unknown-queries", {
+        method: "POST",
+        body: JSON.stringify({ query }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      console.log("Unknown query recorded:", data);
+    } catch (error) {
+      console.error("Error recording unknown query:", error);
+    }
+  }
+
   onSendButton(chatBox) {
-    var textField = chatBox.querySelector("input"); // Use chatBox here
+    var textField = chatBox.querySelector("input");
     let query = textField.value;
     if (query === "") {
       return;
@@ -50,6 +66,12 @@ class Chatbox {
       .then((r) => {
         let msg2 = { name: "DWIT Chatbot", message: r.answer };
         this.messages.push(msg2);
+
+        // If bot doesn't understand, record the query
+        if (r.answer === "I do not understand...") {
+          this.recordUnknownQuery(query);
+        }
+
         this.updateChatText(chatBox);
         textField.value = "";
       })
