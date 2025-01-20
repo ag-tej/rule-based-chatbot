@@ -15,7 +15,15 @@
     <!-- Toast Notifications -->
     <div id="toast-container" class="fixed top-4 right-4 space-y-2 z-50"></div>
     <div class="container mx-auto px-4 py-8">
-      <h1 class="text-3xl font-bold mb-8">Chatbot Admin Dashboard</h1>
+      <div class="flex items-center justify-between mb-8">
+        <h1 class="text-3xl font-bold">Chatbot Admin Dashboard</h1>
+        <a
+          href="{{ url_for('logout_get') }}"
+          class="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-600 transition duration-200"
+        >
+          Logout
+        </a>
+      </div>
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <!-- Unknown Queries Section -->
         <div class="bg-white p-6 rounded-lg shadow-md">
@@ -117,13 +125,15 @@
             .filter((query) => query.status === "pending")
             .map(
               (query) => `
-              <div class="p-4 border rounded-md cursor-pointer hover:bg-gray-50" onclick="selectQuery('${
+              <div class="p-4 border rounded-md cursor-pointer hover:bg-gray-50 flex justify-between" onclick="selectQuery('${
                 query._id
               }', '${query.query}')">
+              <div>
               <p class="font-medium">${query.query}</p>
               <p class="text-sm text-gray-500">${new Date(
                 query.timestamp
               ).toLocaleString()}</p>
+              </div>
               <button onclick="deleteQuery('${
                 query._id
               }')" class="text-red-500 hover:text-red-700">Delete</button>

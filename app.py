@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 from chat import get_response
 from pymongo import MongoClient
 from datetime import datetime
@@ -8,6 +8,12 @@ from train import train_model
 from bson import ObjectId
 
 app = Flask(__name__)
+app.secret_key = 'b30486c9c3cf11c1fd78d015bd1055b0c8429385544213ed1514558ba78603d9'
+
+# Hardcoded credentials
+CREDENTIALS = {
+    'admin': 'password123'
+}
 
 # MongoDB connection
 client = MongoClient('mongodb://localhost:27017/')
@@ -15,11 +21,40 @@ db = client['chatbot']
 unknown_queries = db['unknown_queries']
 intents_collection = db['intents']
 
+def login_required(func):
+    """Decorator to protect routes."""
+    def wrapper(*args, **kwargs):
+        if not session.get('logged_in'):
+            return redirect(url_for('login_get'))
+        return func(*args, **kwargs)
+    wrapper.__name__ = func.__name__
+    return wrapper
+
 @app.get("/")
 def index_get() -> str:
     return render_template("base.html")
 
+@app.get("/login")
+def login_get() -> str:
+    return render_template("login.html")
+
+@app.post("/login")
+def login_post() -> str:
+    username = request.form.get('username')
+    password = request.form.get('password')
+    if CREDENTIALS.get(username) == password:
+        session['logged_in'] = True
+        session['username'] = username
+        return redirect(url_for('admin_get'))
+    return render_template("login.html", error="Invalid username or password")
+
+@app.get("/logout")
+def logout_get() -> str:
+    session.clear()
+    return redirect(url_for('login_get'))
+
 @app.get("/admin")
+@login_required
 def admin_get() -> str:
     return render_template("admin.html")
 
@@ -35,6 +70,7 @@ def predict() -> jsonify:
     return jsonify(message)
 
 @app.route('/api/unknown-queries', methods=['GET', 'POST', 'DELETE'])
+@login_required
 def handle_unknown_queries():
     if request.method == 'POST':
         query = request.json.get('query')
@@ -62,7 +98,9 @@ def handle_unknown_queries():
         query['_id'] = str(query['_id'])
         query['timestamp'] = query['timestamp'].isoformat()
     return jsonify(queries)
+
 @app.route('/api/intents', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@login_required
 def handle_intents():
     if request.method == 'GET':
         intents = list(intents_collection.find())
